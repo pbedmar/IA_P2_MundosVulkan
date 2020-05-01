@@ -6,37 +6,37 @@
 
 #IncludeRegexTransform: 
 
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/entidad.cpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/entidad.cpp
 motorlib/entidad.hpp
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motorlib/entidad.hpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motorlib/entidad.hpp
 
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/mapa.cpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/mapa.cpp
 motorlib/mapa.hpp
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motorlib/mapa.hpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motorlib/mapa.hpp
 
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/monitor.cpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/monitor.cpp
 motorlib/monitor.hpp
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motorlib/monitor.hpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motorlib/monitor.hpp
 fstream
 -
 
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motor_grafico.cpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motor_grafico.cpp
 motorlib.hpp
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motorlib.hpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motorlib.hpp
 glui/glui.h
 -
 dirent.h
 -
 
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motor_juego.cpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motor_juego.cpp
 motorlib.hpp
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motorlib.hpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motorlib.hpp
 unistd.h
 -
 
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/util.cpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/util.cpp
 motorlib/util.h
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/src/motorlib/motorlib/util.h
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/src/motorlib/motorlib/util.h
 
 Comportamientos_Jugador/aldeano.hpp
 chrono

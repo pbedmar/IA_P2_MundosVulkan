@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/bin_src/juego.cc" "/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/CMakeFiles/Belkan.dir/bin_src/juego.cc.o"
+  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/bin_src/juego.cc" "/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/CMakeFiles/Belkan.dir/bin_src/juego.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -15,11 +15,11 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/CMakeFiles/obj3DLib.dir/DependInfo.cmake"
-  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/CMakeFiles/motorLib.dir/DependInfo.cmake"
-  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/CMakeFiles/modelosBelkanLib.dir/DependInfo.cmake"
-  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/CMakeFiles/GLUILib.dir/DependInfo.cmake"
-  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/CMakeFiles/comportamientosLib.dir/DependInfo.cmake"
+  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/CMakeFiles/obj3DLib.dir/DependInfo.cmake"
+  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/CMakeFiles/motorLib.dir/DependInfo.cmake"
+  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/CMakeFiles/modelosBelkanLib.dir/DependInfo.cmake"
+  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/CMakeFiles/GLUILib.dir/DependInfo.cmake"
+  "/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/CMakeFiles/comportamientosLib.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

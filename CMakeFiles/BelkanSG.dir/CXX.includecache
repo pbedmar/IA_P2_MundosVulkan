@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/bin_src/juegoSG.cc
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/bin_src/juegoSG.cc
 motorlib.hpp
-/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/bin_src/motorlib.hpp
+/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/bin_src/motorlib.hpp
 fstream
 -
 

@@ -12,30 +12,37 @@
 // que se piden en la práctica. Tiene como entrada la información de los
 // sensores y devuelve la acción a realizar.
 Action ComportamientoJugador::think(Sensores sensores) {
-	Action accion = actIDLE;
+	Action sigAccion = actIDLE;
 	// Estoy en el nivel 1
+	if(!hayplan){
+		actual.fila        = sensores.posF;
+		actual.columna     = sensores.posC;
+		actual.orientacion = sensores.sentido;
 
-	actual.fila        = sensores.posF;
-	actual.columna     = sensores.posC;
-	actual.orientacion = sensores.sentido;
+		cout << "Fila: " << actual.fila << endl;
+		cout << "Col : " << actual.columna << endl;
+		cout << "Ori : " << actual.orientacion << endl;
 
-	cout << "Fila: " << actual.fila << endl;
-	cout << "Col : " << actual.columna << endl;
-	cout << "Ori : " << actual.orientacion << endl;
+		destino.fila       = sensores.destinoF;
+		destino.columna    = sensores.destinoC;
 
-	destino.fila       = sensores.destinoF;
-	destino.columna    = sensores.destinoC;
-
-	if (sensores.nivel != 4){
-		bool hay_plan = pathFinding (sensores.nivel, actual, destino, plan);
+		if (sensores.nivel != 4){
+			hayplan = pathFinding(sensores.nivel, actual, destino, plan);
+		}
+		else {
+			// Estoy en el nivel 2
+			cout << "Aún no implementado el nivel 2" << endl;
+		}
 	}
-	else {
-		// Estoy en el nivel 2
-		cout << "Aún no implementado el nivel 2" << endl;
+
+	if(hayplan and plan.size()>0){
+		sigAccion = plan.front();
+		plan.erase(plan.begin());
+	} else {
+		cout << "No es posible encontrar la siguiente accion" << endl;
 	}
-	
-	accion = plan.front();
-  	return accion;
+
+  	return sigAccion;
 }
 
 
@@ -138,7 +145,7 @@ bool ComportamientoJugador::pathFinding_Profundidad(const estado &origen, const 
 
 	pila.push(current);
 
-  while (!pila.empty() and (current.st.fila!=destino.fila or current.st.columna != destino.columna)){
+  	while (!pila.empty() and (current.st.fila!=destino.fila or current.st.columna != destino.columna)){
 
 		pila.pop();
 		generados.insert(current.st);
@@ -149,7 +156,6 @@ bool ComportamientoJugador::pathFinding_Profundidad(const estado &origen, const 
 		if (generados.find(hijoTurnR.st) == generados.end()){
 			hijoTurnR.secuencia.push_back(actTURN_R);
 			pila.push(hijoTurnR);
-
 		}
 
 		// Generar descendiente de girar a la izquierda
@@ -240,10 +246,18 @@ bool ComportamientoJugador::pathFinding_Anchura(const estado &origen, const esta
 		}
 
 		// Tomo el siguiente valor de la pila
-		if (!cola.empty()){
+		/*if (!cola.empty()){
 			current = cola.front();
+		}*/
+
+		current = cola.front();
+		while (!cola.empty() and generados.find(current.st) != generados.end()){
+			current = cola.front();
+			cola.pop();
 		}
 	}
+
+	cout << "Tamanio generados: " << generados.size() << endl;
 
   	cout << "Terminada la busqueda\n";
 

@@ -6,5 +6,5 @@ CXX_FLAGS =  -fopenmp -pthread -std=c++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/pedrobedmar/Dropbox/IA/PRACTICAS/practica2_linux/include 
+CXX_INCLUDES = -I/home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/include 
 
