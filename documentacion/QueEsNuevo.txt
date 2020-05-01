@@ -1,0 +1,6 @@
+==========================
+= versión del 30/03/2020 =
+==========================
+- Corregido bug de la casilla de recarga
+- Corregido error de confunsión en la ventana de configuración entre filas y columnas
+- Corregido en el fichero jugador.cpp la consideración de las zapatillas (casilla con valor 'D') como un obstáculo.
