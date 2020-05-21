@@ -9,7 +9,10 @@ struct estado {
   int fila;
   int columna;
   int orientacion;
+  int coste;
 };
+
+
 
 class ComportamientoJugador : public Comportamiento {
   public:
@@ -50,9 +53,11 @@ class ComportamientoJugador : public Comportamiento {
     bool pathFinding(int level, const estado &origen, const estado &destino, list<Action> &plan);
     bool pathFinding_Profundidad(const estado &origen, const estado &destino, list<Action> &plan);
     bool pathFinding_Anchura(const estado &origen, const estado &destino, list<Action> &plan);
+    bool pathFinding_CostoUniforme(const estado &origen, const estado &destino, list<Action> &plan);
 
     void PintaPlan(list<Action> plan);
     bool HayObstaculoDelante(estado &st);
+    int costeCasilla(const char suelo, const bool bik, const bool zap);
 
 };
 

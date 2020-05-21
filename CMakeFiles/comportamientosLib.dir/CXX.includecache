@@ -37,6 +37,8 @@ stack
 -
 queue
 -
+vector
+-
 
 /home/pedrobedmar/Dropbox/IA/PRACTICAS/IA_P2_MundosVulkan/Comportamientos_Jugador/jugador.hpp
 comportamientos/comportamiento.hpp
