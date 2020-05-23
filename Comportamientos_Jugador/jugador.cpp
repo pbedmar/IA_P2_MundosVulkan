@@ -14,6 +14,7 @@
 // sensores y devuelve la acción a realizar.
 Action ComportamientoJugador::think(Sensores sensores) {
 	Action sigAccion = actIDLE;
+	numOperaciones--;
 
 	// Estoy en el nivel 1
 	if(sensores.nivel!=4){
@@ -68,6 +69,8 @@ Action ComportamientoJugador::think(Sensores sensores) {
 			}
 		}
 
+		rellenarMapa(sensores);
+
 		if(hayplan && plan.size()>0){
 			sigAccion = plan.front();
 			plan.erase(plan.begin());
@@ -91,10 +94,9 @@ Action ComportamientoJugador::think(Sensores sensores) {
 			}
 		}
 
-		rellenarMapa(sensores);
 
-		if(!tengoBikini && !enMisionBikini){
-			for(int i=0;i<16;i++){
+		for(int i=0;i<16;i++){
+			if(!tengoBikini && !enMisionBikini){
 				if(sensores.terreno[i]=='K'){
 					int f=actual.fila, c=actual.columna;
 					devolverPosicionConoMapa(actual.orientacion,i,f,c);
@@ -105,11 +107,7 @@ Action ComportamientoJugador::think(Sensores sensores) {
 					sigAccion = actIDLE;
 					cout << "eyyyy " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
 				}
-			}
-		}
-
-		if(!tengoZapatillas && !enMisionZapatillas){
-			for(int i=0;i<16;i++){
+			}else if(!tengoZapatillas && !enMisionZapatillas){
 				if(sensores.terreno[i]=='D'){
 					int f=actual.fila, c=actual.columna;
 					devolverPosicionConoMapa(actual.orientacion,i,f,c);
@@ -121,27 +119,84 @@ Action ComportamientoJugador::think(Sensores sensores) {
 					cout << "eyyyy2 " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
 				}
 			}
+
+			if(sensores.terreno[i]=='X'){
+				int f=actual.fila, c=actual.columna;
+				devolverPosicionConoMapa(actual.orientacion,i,f,c);
+				bool insertar = true;
+				for(vector<pair<int,int> >::iterator it=casillasRecarga.begin();it!=casillasRecarga.end();++it){
+					if(f==(*it).first&&c==(*it).second){
+						insertar = false;
+					}
+				}
+				if(insertar){
+					casillasRecarga.push_back(make_pair(f,c));
+				}
+			}
 		}
+
+		if(sensores.bateria < 1500 && sensores.bateria < 3*costeFinal && sensores.bateria < 1.2*numOperaciones && casillasRecarga.size()>0 && !enMisionRecarga){
+			hayplan = false;
+			sigAccion = actIDLE;
+			list<Action> planMax;
+			int costeMax = 10000000;
+			for(vector<pair<int,int> >::iterator it=casillasRecarga.begin();it!=casillasRecarga.end();++it){
+				destino.fila = (*it).first;
+				destino.columna = (*it).second;
+				hayplan = pathFinding_CostoUniforme(actual,destino,plan);
+				if(costeFinal<costeMax){
+					planMax=plan;
+				}
+				plan = planMax;
+			}
+			enMisionRecarga = true;
+			enMisionBikini = false;
+			enMisionZapatillas = false;
+			cout << "recargaaa" << endl;
+		}
+
+		cout << "CASILLAS RECARGA: ";
+		for(vector<pair<int,int> >::iterator it=casillasRecarga.begin();it!=casillasRecarga.end();++it){
+			cout << (*it).first << " " << (*it).second << " -- ";
+		}
+		cout << endl;
 		
 		
-		if(actualLetra=='K'){
+		if(actualLetra=='X'){
+			if((sensores.bateria<2900 && sensores.bateria < 1.2*numOperaciones)||ultimaRecarga){
+				ultimaRecarga = true;
+				if(!(sensores.bateria<2900 && sensores.bateria < 1.2*numOperaciones)){
+					ultimaRecarga = false;
+					hayplan = false;
+					enMisionRecarga = false;
+				}
+				sigAccion = actIDLE;
+					
+				enMisionBikini = false;
+				enMisionZapatillas = false;
+			}
+		}else if(actualLetra=='K'){
 			if(enMisionBikini){
 				hayplan = false;
 				enMisionBikini = false;
+				enMisionZapatillas = false;
+				enMisionRecarga = false;
 			}
 			tengoBikini = true;
 		} else if(actualLetra=='D'){
 			if(enMisionZapatillas){
 				hayplan = false;
 				enMisionZapatillas = false;
+				enMisionBikini = false;
+				enMisionRecarga = false;
 			}
 			tengoZapatillas = true;
 		}
 	}
-
 	
   	return sigAccion;
 }
+
 
 void ComportamientoJugador::devolverPosicionConoMapa(int orientacion, int posCono, int & fil, int & col){
 	
@@ -644,38 +699,6 @@ public:
 	}
 };
 
-// void pruebaColaPrio(){
-// 	cout << "EMPIEZA LA PRUEBA: ";
-// 	ColaPrio p;
-
-// 	nodo n1, n2, n3;
-// 	n1.coste = 10;
-// 	n2.coste = 5;
-// 	n3.coste = 12;
-
-// 	p.push(n1); p.push(n2); p.push(n3);
-
-// 	auto it = p.find(n2);
-// 	cout << (*it).coste;
-// 	cout << "EHH ";
-// 	p.erase(it);
-// 	cout << "ahhh";
-
-// 	// auto it2=p.begin();
-// 	// if(it2==it){
-// 	// 	cout << "si: " << (*it).coste;
-// 	// } else {
-// 	// 	cout << "no: " << (*it).coste << " " << (*it2).coste; 
-// 	// }
-// 	// cout << endl;
-
-// 	while(!p.empty()){
-// 		cout << p.top().coste << " ";
-// 		p.pop();
-// 	}
-	
-// 	cout << endl;
-// }
 
 bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, const estado &destino, list<Action> &plan) {
 	//Borro la lista
@@ -797,6 +820,7 @@ bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, cons
 	if (current.st.fila == destino.fila and current.st.columna == destino.columna){
 		cout << "Cargando el plan\n";
 		plan = current.secuencia;
+		costeFinal = current.coste;
 		cout << "Longitud del plan: " << plan.size() << endl;
 		PintaPlan(plan);
 		// ver el plan en el mapa
@@ -811,14 +835,6 @@ bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, cons
 	return false;
 }
 
-
-//****************************************************************************************************************************
-//************************NIVEL 2: COSTO UNIFORME*****************************************************************************
-//****************************************************************************************************************************
-
-bool ComportamientoJugador::pathFinding_Nivel2CostoUniforme(const estado &origen, const estado &destino, list<Action> &plan) {
-
-}
 
 
 // Sacar por la términal la secuencia del plan obtenido

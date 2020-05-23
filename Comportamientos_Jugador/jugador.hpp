@@ -28,8 +28,12 @@ class ComportamientoJugador : public Comportamiento {
       tengoZapatillas =false;
       enMisionBikini = false;
       enMisionZapatillas = false;
+      enMisionRecarga = false;
       filDestinoAux = -1;
       colDestinoAux = -1;
+      costeFinal = 0;
+      numOperaciones = 3000;
+      ultimaRecarga = false;
     }
     ComportamientoJugador(std::vector< std::vector< unsigned char> > mapaR) : Comportamiento(mapaR) {
       // Inicializar Variables de Estado
@@ -43,8 +47,12 @@ class ComportamientoJugador : public Comportamiento {
       tengoZapatillas =false;
       enMisionBikini = false;
       enMisionZapatillas = false;
+      enMisionRecarga = false;
       filDestinoAux = -1;
       colDestinoAux = -1;
+      costeFinal = 0;
+      numOperaciones = 3000;
+      ultimaRecarga = false;
     }
     ComportamientoJugador(const ComportamientoJugador & comport) : Comportamiento(comport){}
     ~ComportamientoJugador(){}
@@ -60,17 +68,17 @@ class ComportamientoJugador : public Comportamiento {
     estado actual, destino;
     list<Action> plan;
     bool hayplan;
-    vector<estado> recargas;
-    bool tengoBikini, tengoZapatillas, enMisionBikini, enMisionZapatillas;
+    vector<pair<int,int> > casillasRecarga;
+    bool tengoBikini, tengoZapatillas, enMisionBikini, enMisionZapatillas, enMisionRecarga;
     char actualLetra;
-    int filDestinoAux, colDestinoAux;
+    int filDestinoAux, colDestinoAux, costeFinal, numOperaciones;
+    bool ultimaRecarga;
 
     // Métodos privados de la clase
     bool pathFinding(int level, const estado &origen, const estado &destino, list<Action> &plan);
     bool pathFinding_Profundidad(const estado &origen, const estado &destino, list<Action> &plan);
     bool pathFinding_Anchura(const estado &origen, const estado &destino, list<Action> &plan);
     bool pathFinding_CostoUniforme(const estado &origen, const estado &destino, list<Action> &plan);
-    bool pathFinding_Nivel2CostoUniforme(const estado &origen, const estado &destino, list<Action> &plan);
 
     void rellenarMapa(Sensores sensores);
 
