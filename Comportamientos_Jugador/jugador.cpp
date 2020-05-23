@@ -42,25 +42,30 @@ Action ComportamientoJugador::think(Sensores sensores) {
 
 	} else {
 
-		if(!hayplan){
+		actual.fila        = sensores.posF;
+		actual.columna     = sensores.posC;
+		actual.orientacion = sensores.sentido;
+		actualLetra		   = mapaResultado[actual.fila][actual.columna];
 
-			actual.fila        = sensores.posF;
-			actual.columna     = sensores.posC;
-			actual.orientacion = sensores.sentido;
+		if(!hayplan){
 
 			cout << "Fila: " << actual.fila << endl;
 			cout << "Col : " << actual.columna << endl;
 			cout << "Ori : " << actual.orientacion << endl;
 
-			destino.fila       = sensores.destinoF;
-			destino.columna    = sensores.destinoC;
+			if(enMisionBikini || enMisionZapatillas){
+				destino.fila = filDestinoAux;
+				destino.columna = colDestinoAux;
+			} else {
+				destino.fila       = sensores.destinoF;
+				destino.columna    = sensores.destinoC;
+			}
 
 			hayplan = pathFinding(sensores.nivel, actual, destino, plan);
 			if(hayplan){
 				PintaPlan(plan);
 				VisualizaPlan(actual, plan);
 			}
-			cout << "holaa" << endl;
 		}
 
 		if(hayplan && plan.size()>0){
@@ -71,16 +76,15 @@ Action ComportamientoJugador::think(Sensores sensores) {
 			hayplan = false;
 		}
 
-		int fila = actual.fila, columna=actual.columna;
-
+		//Detectamos obstáculos
 		if(sigAccion==actFORWARD){
-			cout << "ehefef" << endl;
+			//Muros y precipicios
 			if(sensores.terreno[2]=='M'||sensores.terreno[2]=='P'){
 				sigAccion=actIDLE;
 				hayplan=false;
 				plan.clear();
-				cout << "ehhhh";
 			}
+			//Aldeanos
 			if(sensores.superficie[2]=='a'){
 				sigAccion=actIDLE;
 				plan.push_front(actFORWARD);
@@ -88,16 +92,146 @@ Action ComportamientoJugador::think(Sensores sensores) {
 		}
 
 		rellenarMapa(sensores);
-	}
 
-	//Estoy en el nivel 2
+		if(!tengoBikini && !enMisionBikini){
+			for(int i=0;i<16;i++){
+				if(sensores.terreno[i]=='K'){
+					int f=actual.fila, c=actual.columna;
+					devolverPosicionConoMapa(actual.orientacion,i,f,c);
+					filDestinoAux = f;
+					colDestinoAux = c;
+					hayplan = false;
+					enMisionBikini = true;
+					sigAccion = actIDLE;
+					cout << "eyyyy " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
+				}
+			}
+		}
+
+		if(!tengoZapatillas && !enMisionZapatillas){
+			for(int i=0;i<16;i++){
+				if(sensores.terreno[i]=='D'){
+					int f=actual.fila, c=actual.columna;
+					devolverPosicionConoMapa(actual.orientacion,i,f,c);
+					filDestinoAux= f;
+					colDestinoAux = c;
+					hayplan = false;
+					enMisionZapatillas = true;
+					sigAccion = actIDLE;
+					cout << "eyyyy2 " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
+				}
+			}
+		}
+		
+		
+		if(actualLetra=='K'){
+			if(enMisionBikini){
+				hayplan = false;
+				enMisionBikini = false;
+			}
+			tengoBikini = true;
+		} else if(actualLetra=='D'){
+			if(enMisionZapatillas){
+				hayplan = false;
+				enMisionZapatillas = false;
+			}
+			tengoZapatillas = true;
+		}
+	}
 
 	
   	return sigAccion;
 }
 
-void ComportamientoJugador::evitarObstaculo(){
+void ComportamientoJugador::devolverPosicionConoMapa(int orientacion, int posCono, int & fil, int & col){
 	
+	switch(orientacion){
+		case 0:
+			switch(posCono){
+				case 1: fil=fil-1; col=col-1; break;
+				case 2: fil=fil-1; 			  break;
+				case 3: fil=fil-1; col=col+1; break;
+
+				case 4: fil=fil-2; col=col-2; break;
+				case 5: fil=fil-2; col=col-1; break;
+				case 6: fil=fil-2; 			  break;
+				case 7: fil=fil-2; col=col+1; break;
+				case 8: fil=fil-2; col=col+2; break;
+
+				case 9: fil=fil-3; col=col-3; break;
+				case 10: fil=fil-3; col=col-2; break;
+				case 11: fil=fil-3; col=col-1; break;
+				case 12: fil=fil-3; 		   break;
+				case 13: fil=fil-3; col=col+1; break;
+				case 14: fil=fil-3; col=col+2; break;
+				case 15: fil=fil-3; col=col+3; break;
+			}
+		break;
+		case 1:
+			switch(posCono){
+				case 1: fil=fil-1; col=col+1; break;
+				case 2: 		   col=col+1; break;
+				case 3: fil=fil+1; col=col+1; break;
+
+				case 4: fil=fil-2; col=col+2; break;
+				case 5: fil=fil-1; col=col+2; break;
+				case 6: 		   col=col+2; break;
+				case 7: fil=fil+1; col=col+2; break;
+				case 8: fil=fil+2; col=col+2; break;
+
+				case 9: fil=fil-3; col=col+3; break;
+				case 10: fil=fil-2; col=col+3; break;
+				case 11: fil=fil-1; col=col+3; break;
+				case 12: 			col=col+3; break;
+				case 13: fil=fil+1; col=col+3; break;
+				case 14: fil=fil+2; col=col+3; break;
+				case 15: fil=fil+3; col=col+3; break;
+			}
+		break;
+		case 2:
+			switch(posCono){
+				case 1: fil=fil+1; col=col+1; break;
+				case 2: fil=fil+1; 			  break;
+				case 3: fil=fil+1; col=col-1; break;
+
+				case 4: fil=fil+2; col=col+2; break;
+				case 5: fil=fil+2; col=col+1; break;
+				case 6: fil=fil+2; 			  break;
+				case 7: fil=fil+2; col=col-1; break;
+				case 8: fil=fil+2; col=col-2; break;
+
+				case 9: fil=fil+3; col=col+3; break;
+				case 10: fil=fil+3; col=col+2; break;
+				case 11: fil=fil+3; col=col+1; break;
+				case 12: fil=fil+3; 		   break;
+				case 13: fil=fil+3; col=col-1; break;
+				case 14: fil=fil+3; col=col-2; break;
+				case 15: fil=fil+3; col=col-3; break;
+			}
+		break;
+		case 3:
+			switch(posCono){
+				case 1: fil=fil+1; col=col-1; break;
+				case 2: 		   col=col-1; break;
+				case 3: fil=fil-1; col=col-1; break;
+
+				case 4: fil=fil+2; col=col-2; break;
+				case 5: fil=fil+1; col=col-2; break;
+				case 6: 		   col=col-2; break;
+				case 7: fil=fil-1; col=col-2; break;
+				case 8: fil=fil-2; col=col-2; break;
+
+				case 9: fil=fil+3; col=col-3; break;
+				case 10: fil=fil+2; col=col-3; break;
+				case 11: fil=fil+1; col=col-3; break;
+				case 12: 			col=col-3; break;
+				case 13: fil=fil-1; col=col-3; break;
+				case 14: fil=fil-2; col=col-3; break;
+				case 15: fil=fil-3; col=col-3; break;
+			}
+		break;
+
+	}
 }
 
 void ComportamientoJugador::rellenarMapa(Sensores sensores){

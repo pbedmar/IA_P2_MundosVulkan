@@ -26,6 +26,10 @@ class ComportamientoJugador : public Comportamiento {
       hayplan=false;
       tengoBikini = false;
       tengoZapatillas =false;
+      enMisionBikini = false;
+      enMisionZapatillas = false;
+      filDestinoAux = -1;
+      colDestinoAux = -1;
     }
     ComportamientoJugador(std::vector< std::vector< unsigned char> > mapaR) : Comportamiento(mapaR) {
       // Inicializar Variables de Estado
@@ -37,6 +41,10 @@ class ComportamientoJugador : public Comportamiento {
       hayplan=false;
       tengoBikini = false;
       tengoZapatillas =false;
+      enMisionBikini = false;
+      enMisionZapatillas = false;
+      filDestinoAux = -1;
+      colDestinoAux = -1;
     }
     ComportamientoJugador(const ComportamientoJugador & comport) : Comportamiento(comport){}
     ~ComportamientoJugador(){}
@@ -53,7 +61,9 @@ class ComportamientoJugador : public Comportamiento {
     list<Action> plan;
     bool hayplan;
     vector<estado> recargas;
-    bool tengoBikini, tengoZapatillas;
+    bool tengoBikini, tengoZapatillas, enMisionBikini, enMisionZapatillas;
+    char actualLetra;
+    int filDestinoAux, colDestinoAux;
 
     // Métodos privados de la clase
     bool pathFinding(int level, const estado &origen, const estado &destino, list<Action> &plan);
@@ -68,7 +78,7 @@ class ComportamientoJugador : public Comportamiento {
     bool HayObstaculoDelante(estado &st);
     int costeCasilla(const char suelo, const bool bik, const bool zap);
 
-    void evitarObstaculo();
+    void devolverPosicionConoMapa(int orientacion, int posCono, int & fil, int & col);
 
 };
 
