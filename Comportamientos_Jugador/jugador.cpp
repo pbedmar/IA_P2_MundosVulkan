@@ -69,9 +69,7 @@ Action ComportamientoJugador::think(Sensores sensores) {
 			}
 		}
 
-		rellenarMapa(sensores);
-
-		if(hayplan && plan.size()>0){
+		if(hayplan && plan.size()>0 && !ultimaRecarga){
 			sigAccion = plan.front();
 			plan.erase(plan.begin());
 		} else if(plan.size()==0){
@@ -94,7 +92,6 @@ Action ComportamientoJugador::think(Sensores sensores) {
 			}
 		}
 
-
 		for(int i=0;i<16;i++){
 			if(!tengoBikini && !enMisionBikini){
 				if(sensores.terreno[i]=='K'){
@@ -105,9 +102,12 @@ Action ComportamientoJugador::think(Sensores sensores) {
 					hayplan = false;
 					enMisionBikini = true;
 					sigAccion = actIDLE;
-					cout << "eyyyy " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
+					//cout << "eyyyy " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
 				}
-			}else if(!tengoZapatillas && !enMisionZapatillas){
+			}
+			
+			if(!tengoZapatillas && !enMisionZapatillas){
+				//cout << sensores.terreno[i] << " ";
 				if(sensores.terreno[i]=='D'){
 					int f=actual.fila, c=actual.columna;
 					devolverPosicionConoMapa(actual.orientacion,i,f,c);
@@ -116,7 +116,7 @@ Action ComportamientoJugador::think(Sensores sensores) {
 					hayplan = false;
 					enMisionZapatillas = true;
 					sigAccion = actIDLE;
-					cout << "eyyyy2 " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
+					//cout << "eyyyy2 " << hayplan << " " << filDestinoAux << " " << colDestinoAux << endl;
 				}
 			}
 
@@ -134,8 +134,9 @@ Action ComportamientoJugador::think(Sensores sensores) {
 				}
 			}
 		}
+		//cout << endl;
 
-		if(sensores.bateria < 1500 && sensores.bateria < 3*costeFinal && sensores.bateria < 1.2*numOperaciones && casillasRecarga.size()>0 && !enMisionRecarga){
+		if(sensores.bateria < 1500 && sensores.bateria < 3.5*costeFinal && casillasRecarga.size()>0 && !enMisionRecarga && sensores.bateria < 1.7*numOperaciones && numOperaciones > 300){
 			hayplan = false;
 			sigAccion = actIDLE;
 			list<Action> planMax;
@@ -152,20 +153,20 @@ Action ComportamientoJugador::think(Sensores sensores) {
 			enMisionRecarga = true;
 			enMisionBikini = false;
 			enMisionZapatillas = false;
-			cout << "recargaaa" << endl;
+			//cout << "recargaaa" << endl;
 		}
 
-		cout << "CASILLAS RECARGA: ";
-		for(vector<pair<int,int> >::iterator it=casillasRecarga.begin();it!=casillasRecarga.end();++it){
-			cout << (*it).first << " " << (*it).second << " -- ";
-		}
-		cout << endl;
+		//cout << "CASILLAS RECARGA: ";
+		// for(vector<pair<int,int> >::iterator it=casillasRecarga.begin();it!=casillasRecarga.end();++it){
+		// 	cout << (*it).first << " " << (*it).second << " -- ";
+		// }
+		// cout << endl;
 		
 		
 		if(actualLetra=='X'){
-			if((sensores.bateria<2900 && sensores.bateria < 1.2*numOperaciones)||ultimaRecarga){
+			if((sensores.bateria<2900)||ultimaRecarga){
 				ultimaRecarga = true;
-				if(!(sensores.bateria<2900 && sensores.bateria < 1.2*numOperaciones)){
+				if(!(sensores.bateria<2900)){  //&& sensores.bateria < 2.0*numOperaciones
 					ultimaRecarga = false;
 					hayplan = false;
 					enMisionRecarga = false;
@@ -193,6 +194,8 @@ Action ComportamientoJugador::think(Sensores sensores) {
 			tengoZapatillas = true;
 		}
 	}
+
+	rellenarMapa(sensores);
 	
   	return sigAccion;
 }
@@ -635,9 +638,6 @@ int ComportamientoJugador::costeCasilla(const char suelo, const bool bik, const 
 		break;
 		case '?': 
 			return 3;
-		break;
-		case 'X':
-			return 1;
 		break;
 		default: 
 			return 1;
